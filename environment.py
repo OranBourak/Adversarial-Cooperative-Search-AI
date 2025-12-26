@@ -20,17 +20,13 @@ class Environment:
         self.agents_states.append(state)
         self.agents_logic.append(agent_logic)
 
-    def get_world_hash(self):
-        """ Returns a hashable representation of the current world state
-         Returns a tuple of:
-         - Agents' (current_vertex, equipped) states
-         - Vertices' people counts
-         - Vertices' kits counts
-         """
+    def get_world_hash(self, current_agent_id: int):
+        """ Returns a hashable state including the current agent's turn """
         agent_info = tuple((a.current_vertex, a.equipped) for a in self.agents_states)
         people_info = tuple(v.people for v in sorted(self.graph.vertices.values(), key=lambda x: x.vid))
         kit_info = tuple(v.kits for v in sorted(self.graph.vertices.values(), key=lambda x: x.vid))
-        return (agent_info, people_info, kit_info)
+        # Inclusion of agent_id is mandatory to distinguish between turns
+        return (current_agent_id, agent_info, people_info, kit_info)
 
     def step(self, visualize=True):
         ''' Resolves one time step in the simulation 
@@ -57,7 +53,7 @@ class Environment:
                     return
 
                 # Check state revisit
-                current_state = self.get_world_hash()
+                current_state = self.get_world_hash(i)
                 if current_state in self.history:
                     print(f"State revisit detected at T={self.time}. Terminating.")
                     self.simulation_done = True

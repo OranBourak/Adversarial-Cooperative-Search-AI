@@ -1,6 +1,7 @@
 import math
 import copy
-from agent_base import Action, ActionType, Observation
+from typing import List
+from agent_base import Action, ActionType, AgentState, Observation
 
 class MiniMaxAgent:
     def __init__(self, game_type: int, depth_limit: int = 3):
@@ -60,18 +61,19 @@ class MiniMaxAgent:
         return 100 # Default large distance
 
     def _alphabeta(self, obs, depth, alpha, beta, maximizing):
-        # Terminal condition, if depth is 0 or no more people to rescue
         if depth == 0 or all(v[0] == 0 for v in obs.vertices.values()):
             return self._heuristic(obs), None
 
-        legal_actions = self._get_legal_actions(obs)
+        # Determine whose actions to evaluate
+        # If maximizing, it's my turn. If minimizing, it's the opponent's turn.
+        active_id = obs.self_id if maximizing else (1 - obs.self_id)
+        legal_actions = self._get_legal_actions_for_id(obs, active_id)
+        
         best_action = None
-
         if maximizing:
             v = -math.inf
             for action in legal_actions:
-                # Simulate the outcome (Successor State)
-                successor_obs = self._simulate_move(obs, action)
+                successor_obs = self._simulate_move_for_id(obs, action, active_id)
                 score, _ = self._alphabeta(successor_obs, depth - 1, alpha, beta, False)
                 if score > v:
                     v = score
@@ -82,7 +84,7 @@ class MiniMaxAgent:
         else:
             v = math.inf
             for action in legal_actions:
-                successor_obs = self._simulate_move(obs, action)
+                successor_obs = self._simulate_move_for_id(obs, action, active_id)
                 score, _ = self._alphabeta(successor_obs, depth - 1, alpha, beta, True)
                 if score < v:
                     v = score
@@ -112,9 +114,26 @@ class MiniMaxAgent:
             
         return actions
 
-    def _simulate_move(self, obs, action) -> Observation:
-        """ Simplified simulation for MiniMax lookahead """
+    def _simulate_move(self, obs: Observation, action: Action) -> Observation:
+        """ Creates a successor state for the MiniMax lookahead """
         new_obs = copy.deepcopy(obs)
-        # In this simplified model for lookahead, we assume turn-based swaps
-        # and ignore the long-duration wait times for simplicity in search.
+        me = list(new_obs.agents)[new_obs.self_id]
+        
+        # Update position if traversing
+        if action.kind == ActionType.TRAVERSE:
+            # Create a new AgentState with updated vertex
+            new_me = AgentState(me.agent_id, me.label, action.to_vertex, me.equipped, me.rescued, me.next_ready_time + 1)
+            new_agents = list(new_obs.agents)
+            new_agents[new_obs.self_id] = new_me
+            
+            # Simple simulation: if there are people at target, 'rescue' them in lookahead
+            new_verts = dict(new_obs.vertices)
+            p, k = new_verts[action.to_vertex]
+            if p > 0:
+                new_me = AgentState(new_me.agent_id, new_me.label, new_me.current_vertex, new_me.equipped, new_me.rescued + p, new_me.next_ready_time)
+                new_agents[new_obs.self_id] = new_me
+                new_verts[action.to_vertex] = (0, k)
+                
+            return Observation(new_obs.time + 1, new_obs.Q, new_obs.U, new_obs.P, new_obs.deadline, new_verts, new_obs.edges, new_agents, new_obs.self_id)
+        
         return new_obs

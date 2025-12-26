@@ -7,7 +7,7 @@ def main():
     # User Input for parameters
     file_path = input("Enter map file path [demo_input.txt]: ") or "demo_input.txt"
     deadline = int(input("Enter Deadline D [50]: ") or "50")
-    game_type = int(input("Game Type (1:Adversarial, 2:Semi-Coop, 3:Fully-Coop) [1]: ") or "1")
+    game_type = int(input("Game Type ( 1:Adversarial, 2:Semi-Coop, 3:Fully-Coop ) [1]: ") or "1")
     cutoff = int(input("Enter MiniMax Cutoff depth [3]: ") or "3")
     
     # Starting vertices
