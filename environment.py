@@ -28,49 +28,44 @@ class Environment:
         # Inclusion of agent_id is mandatory to distinguish between turns
         return (current_agent_id, agent_info, people_info, kit_info)
 
+
     def step(self, visualize=True):
-        ''' Resolves one time step in the simulation 
-         by processing all agents ready to act at the current time.'''
-        
-        # Find next time when any agent is ready
         min_ready = min(a.next_ready_time for a in self.agents_states)
+        
         if min_ready >= self.deadline:
             self.time = self.deadline
             self.simulation_done = True
+            if visualize: print(f"\n--- Simulation Terminated: Deadline D={self.deadline} reached ---")
             return
      
         self.time = min_ready
         
-        # Process all agents ready at this exact time
         for i in range(len(self.agents_states)):
             if self.agents_states[i].next_ready_time == self.time:
-                # Automatic rescue upon arrival
                 self._resolve_rescue(i)
                 
-                # Check termination after rescue
                 if self._check_termination():
                     self.simulation_done = True
+                    if visualize: print(f"\n--- Simulation Terminated: All people rescued at T={self.time} ---")
                     return
 
-                # Check state revisit
                 current_state = self.get_world_hash(i)
                 if current_state in self.history:
-                    print(f"State revisit detected at T={self.time}. Terminating.")
+                    if visualize: print(f"\n--- Simulation Terminated: State revisit detected at T={self.time} ---")
                     self.simulation_done = True
                     return
                 self.history.add(current_state)
 
-                # Get decision from agent
                 obs = self._make_obs(i)
                 action = self.agents_logic[i].decide(obs)
                 
-                # Apply the action and set future ready time
                 duration = self._calculate_duration(i, action)
                 self._apply_action(i, action, duration)
 
                 if visualize:
-                    print(f"T={self.time}: {self.agents_states[i].label}#{i} starts {action.kind} "
-                          f"to {action.to_vertex} (Finished at T={self.agents_states[i].next_ready_time})")
+                    target_str = f" to {action.to_vertex}" if action.to_vertex else ""
+                    print(f"T={self.time}: {self.agents_states[i].label}#{i} starts {action.kind.name}{target_str} "
+                          f"(Finished at T={self.agents_states[i].next_ready_time})")
 
     def _resolve_rescue(self, aid: int):
         st = self.agents_states[aid]
