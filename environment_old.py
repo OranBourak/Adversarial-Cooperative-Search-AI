@@ -21,16 +21,8 @@ class Environment:
         self.agents_logic.append(agent_logic)
 
     def get_world_hash(self, current_agent_id: int):
-        """ Returns a hashable state including the current agent's turn.
-        
-        Includes next_ready_time to distinguish between:
-        - Agent at vertex V, idle (ready_time == current_time)
-        - Agent at vertex V, in-transit (ready_time > current_time)
-        
-        This prevents false state revisits when an agent is mid-action.
-        """
-        # Include both position AND ready_time to distinguish in-transit states
-        agent_info = tuple((a.current_vertex, a.equipped, a.next_ready_time) for a in self.agents_states)
+        """ Returns a hashable state including the current agent's turn """
+        agent_info = tuple((a.current_vertex, a.equipped) for a in self.agents_states)
         people_info = tuple(v.people for v in sorted(self.graph.vertices.values(), key=lambda x: x.vid))
         kit_info = tuple(v.kits for v in sorted(self.graph.vertices.values(), key=lambda x: x.vid))
         # Inclusion of agent_id is mandatory to distinguish between turns
@@ -132,35 +124,18 @@ class Parser:
         Q, U, P = 1, 1, 1
         with open(file_path, 'r') as f:
             for line in f:
-                line = line.split(';', 1)[0].strip()
-                if not line:
-                    continue
-
                 if line.startswith('#V'):
                     parts = line.split()
                     vid = int(parts[0][2:])
-
-                    people = 0
-                    kits = 0
-                    for tok in parts[1:]:
-                        if tok.startswith('P') and len(tok) > 1:
-                            people += int(tok[1:])
-                        elif tok.startswith('K'):
-                            kits += int(tok[1:]) if tok[1:].isdigit() else 1
-
+                    people = int(parts[1][1:]) if 'P' in parts[1] else 0
+                    kits = 1 if 'K' in parts[1] else 0
                     g.add_vertex(vid, people, kits)
-
                 elif line.startswith('#E'):
                     parts = line.split()
                     u, v = int(parts[1]), int(parts[2])
                     flooded = 'F' in parts
-                    g.add_edge(u, v, 1, flooded)  # weights forced to 1 in A2
-
-                elif line.startswith('#Q'):
-                    Q = int(line.split()[1])
-                elif line.startswith('#U'):
-                    U = int(line.split()[1])
-                elif line.startswith('#P'):
-                    P = int(line.split()[1])
-
+                    g.add_edge(u, v, 1, flooded)
+                elif line.startswith('#Q'): Q = int(line.split()[1])
+                elif line.startswith('#U'): U = int(line.split()[1])
+                elif line.startswith('#P'): P = int(line.split()[1])
         return g, Q, U, P
