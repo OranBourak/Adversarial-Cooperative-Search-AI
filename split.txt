@@ -1,0 +1,30 @@
+#N 6
+#Q 1
+#U 1
+#P 2
+
+; Scenario 3: Split Resources - Left vs Right
+; Agents start in center, resources on both sides
+;
+;   V1(3p) --- V2(A0) --------- V3(A1) --- V4(3p)
+;                |                 |
+;              V5(2p)            V6(2p)
+;
+; Total: 10 people to rescue
+;
+; In Adversarial: Agents compete, may waste time fighting for center
+; In Fully-Coop: Agent 0 goes left (V1,V5), Agent 1 goes right (V4,V6)
+; In Semi-Coop: Each maximizes own, but cooperates on ties
+
+#V1 P3            ; Left side - 3 people
+#V2               ; Agent 0 starts (center-left)
+#V3               ; Agent 1 starts (center-right)
+#V4 P3            ; Right side - 3 people
+#V5 P2            ; Below Agent 0 - 2 people
+#V6 P2            ; Below Agent 1 - 2 people
+
+#E1 1 2 W1        ; V1-V2
+#E2 2 3 W2        ; V2-V3 (longer path through center!)
+#E3 3 4 W1        ; V3-V4
+#E4 2 5 W1        ; V2-V5
+#E5 3 6 W1        ; V3-V6

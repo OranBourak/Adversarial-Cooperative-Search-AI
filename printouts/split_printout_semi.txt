@@ -1,0 +1,226 @@
+
+################################################################################
+==== SIMULATION START ====
+timestamp: 2026-01-01 12:24:59
+run_id:    2e5c24e5
+################################################################################
+
+Simulation Configuration
+----------------------------------------
+Map file: split.txt
+Game Type: Semi-Cooperative
+  - Adversarial: TS = IS_self - IS_opponent
+  - Semi-Coop:   TS = IS_self (ties favor opponent)
+  - Fully-Coop:  TS = IS_self + IS_opponent
+Cutoff Depth: 4
+Deadline: 50
+Constants: Q=1 (equip), U=1 (unequip), P=2 (amphibian penalty)
+
+Graph: |V|=6
+Vertices (people/kits):
+  V1: people=3, kits=0
+  V2: people=0, kits=0
+  V3: people=0, kits=0
+  V4: people=3, kits=0
+  V5: people=2, kits=0
+  V6: people=2, kits=0
+
+Edges:
+  1--2 : W1, OK
+  2--3 : W1, OK
+  2--5 : W1, OK
+  3--4 : W1, OK
+  3--6 : W1, OK
+
+Agents:
+  MiniMax#0: start=V2
+  MiniMax#1: start=V3
+
+======================================================================
+Time=0 | Game: Semi-Cooperative | Q=1 U=1 P=2 | Deadline=50
+
+Vertices:
+[1P3]  [2]<MiniMax>  [3]<MiniMax>  [4P3]  [5P2]  [6P2]
+
+Edges:
+  1--2 : W1, OK
+  2--3 : W1, OK
+  2--5 : W1, OK
+  3--4 : W1, OK
+  3--6 : W1, OK
+
+Agent Status:
+  MiniMax#0: V2, ready, rescued=0
+  MiniMax#1: V3, ready, rescued=0
+======================================================================
+T=0: MiniMax#0 decides: TRAVERSE -> V1
+         Action will complete at T=1
+T=0: MiniMax#1 decides: TRAVERSE -> V2
+         Action will complete at T=1
+
+======================================================================
+Time=0 | Game: Semi-Cooperative | Q=1 U=1 P=2 | Deadline=50
+
+Vertices:
+[1P3]<MiniMax>  [2]<MiniMax>  [3]  [4P3]  [5P2]  [6P2]
+
+Edges:
+  1--2 : W1, OK
+  2--3 : W1, OK
+  2--5 : W1, OK
+  3--4 : W1, OK
+  3--6 : W1, OK
+
+Agent Status:
+  MiniMax#0: V1, busy (ready at T=1), rescued=0
+  MiniMax#1: V2, busy (ready at T=1), rescued=0
+======================================================================
+T=1: MiniMax#0 decides: TRAVERSE -> V2
+         Action will complete at T=2
+T=1: MiniMax#1 decides: NO_OP
+         Action will complete at T=2
+
+======================================================================
+Time=1 | Game: Semi-Cooperative | Q=1 U=1 P=2 | Deadline=50
+
+Vertices:
+[1]  [2]<MiniMax, MiniMax>  [3]  [4P3]  [5P2]  [6P2]
+
+Edges:
+  1--2 : W1, OK
+  2--3 : W1, OK
+  2--5 : W1, OK
+  3--4 : W1, OK
+  3--6 : W1, OK
+
+Agent Status:
+  MiniMax#0: V2, busy (ready at T=2), rescued=3
+  MiniMax#1: V2, busy (ready at T=2), rescued=0
+======================================================================
+T=2: MiniMax#0 decides: TRAVERSE -> V3
+         Action will complete at T=3
+T=2: MiniMax#1 decides: TRAVERSE -> V5
+         Action will complete at T=3
+
+======================================================================
+Time=2 | Game: Semi-Cooperative | Q=1 U=1 P=2 | Deadline=50
+
+Vertices:
+[1]  [2]  [3]<MiniMax>  [4P3]  [5P2]<MiniMax>  [6P2]
+
+Edges:
+  1--2 : W1, OK
+  2--3 : W1, OK
+  2--5 : W1, OK
+  3--4 : W1, OK
+  3--6 : W1, OK
+
+Agent Status:
+  MiniMax#0: V3, busy (ready at T=3), rescued=3
+  MiniMax#1: V5, busy (ready at T=3), rescued=0
+======================================================================
+T=3: MiniMax#0 decides: NO_OP
+         Action will complete at T=4
+T=3: MiniMax#1 decides: TRAVERSE -> V2
+         Action will complete at T=4
+
+======================================================================
+Time=3 | Game: Semi-Cooperative | Q=1 U=1 P=2 | Deadline=50
+
+Vertices:
+[1]  [2]<MiniMax>  [3]<MiniMax>  [4P3]  [5]  [6P2]
+
+Edges:
+  1--2 : W1, OK
+  2--3 : W1, OK
+  2--5 : W1, OK
+  3--4 : W1, OK
+  3--6 : W1, OK
+
+Agent Status:
+  MiniMax#0: V3, busy (ready at T=4), rescued=3
+  MiniMax#1: V2, busy (ready at T=4), rescued=2
+======================================================================
+T=4: MiniMax#0 decides: TRAVERSE -> V4
+         Action will complete at T=5
+T=4: MiniMax#1 decides: TRAVERSE -> V3
+         Action will complete at T=5
+
+======================================================================
+Time=4 | Game: Semi-Cooperative | Q=1 U=1 P=2 | Deadline=50
+
+Vertices:
+[1]  [2]  [3]<MiniMax>  [4P3]<MiniMax>  [5]  [6P2]
+
+Edges:
+  1--2 : W1, OK
+  2--3 : W1, OK
+  2--5 : W1, OK
+  3--4 : W1, OK
+  3--6 : W1, OK
+
+Agent Status:
+  MiniMax#0: V4, busy (ready at T=5), rescued=3
+  MiniMax#1: V3, busy (ready at T=5), rescued=2
+======================================================================
+T=5: MiniMax#0 decides: TRAVERSE -> V3
+         Action will complete at T=6
+T=5: MiniMax#1 decides: TRAVERSE -> V6
+         Action will complete at T=6
+
+======================================================================
+Time=5 | Game: Semi-Cooperative | Q=1 U=1 P=2 | Deadline=50
+
+Vertices:
+[1]  [2]  [3]<MiniMax>  [4]  [5]  [6P2]<MiniMax>
+
+Edges:
+  1--2 : W1, OK
+  2--3 : W1, OK
+  2--5 : W1, OK
+  3--4 : W1, OK
+  3--6 : W1, OK
+
+Agent Status:
+  MiniMax#0: V3, busy (ready at T=6), rescued=6
+  MiniMax#1: V6, busy (ready at T=6), rescued=2
+======================================================================
+T=6: MiniMax#0 decides: TRAVERSE -> V2
+         Action will complete at T=7
+======================================================================
+Time=6 | Game: Semi-Cooperative | Q=1 U=1 P=2 | Deadline=50
+
+Vertices:
+[1]  [2]<MiniMax>  [3]  [4]  [5]  [6]<MiniMax>
+
+Edges:
+  1--2 : W1, OK
+  2--3 : W1, OK
+  2--5 : W1, OK
+  3--4 : W1, OK
+  3--6 : W1, OK
+
+Agent Status:
+  MiniMax#0: V2, busy (ready at T=7), rescued=6
+  MiniMax#1: V6, ready, rescued=4
+======================================================================
+
+>>> Simulation Terminated: All people rescued <<<
+
+======================================================================
+FINAL RESULTS
+======================================================================
+  MiniMax#0: rescued=6 people
+  MiniMax#1: rescued=4 people
+  TOTAL: 10 people rescued
+
+Game-Specific Scores (TS):
+  MiniMax#0: TS = 6 (ties favor cooperation)
+  MiniMax#1: TS = 4 (ties favor cooperation)
+
+################################################################################
+==== SIMULATION END ====
+timestamp: 2026-01-01 12:24:59
+run_id:    2e5c24e5
+status:    finished
+################################################################################

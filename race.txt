@@ -1,0 +1,30 @@
+#N 5
+#Q 1
+#U 1
+#P 2
+
+; Scenario 1: Race for High Value Target
+; Two agents start equidistant from a high-value center vertex
+; 
+;     V1(A0)       V5(A1)
+;       \         /
+;        V2-----V4
+;         \     /
+;          \   /
+;           V3 (10 people)
+;
+; In Adversarial: Agent 0 (first mover) races to get V3
+; In Fully-Coop: Agents should coordinate - one gets V3, other explores
+; In Semi-Coop: Each tries to maximize own score
+
+#V1 P1            ; Agent 0 starts here, 1 person
+#V2               ; Junction
+#V3 P10           ; High value target - 10 people!
+#V4               ; Junction  
+#V5 P1            ; Agent 1 starts here, 1 person
+
+#E1 1 2 W1        ; V1-V2
+#E2 2 3 W1        ; V2-V3
+#E3 2 4 W1        ; V2-V4
+#E4 3 4 W1        ; V3-V4
+#E5 4 5 W1        ; V4-V5

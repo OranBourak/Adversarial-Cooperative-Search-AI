@@ -1,0 +1,135 @@
+
+################################################################################
+==== SIMULATION START ====
+timestamp: 2026-01-01 12:22:04
+run_id:    380c0fc8
+################################################################################
+
+Simulation Configuration
+----------------------------------------
+Map file: race.txt
+Game Type: Semi-Cooperative
+  - Adversarial: TS = IS_self - IS_opponent
+  - Semi-Coop:   TS = IS_self (ties favor opponent)
+  - Fully-Coop:  TS = IS_self + IS_opponent
+Cutoff Depth: 4
+Deadline: 50
+Constants: Q=1 (equip), U=1 (unequip), P=2 (amphibian penalty)
+
+Graph: |V|=5
+Vertices (people/kits):
+  V1: people=1, kits=0
+  V2: people=0, kits=0
+  V3: people=10, kits=0
+  V4: people=0, kits=0
+  V5: people=1, kits=0
+
+Edges:
+  1--2 : W1, OK
+  2--3 : W1, OK
+  2--4 : W1, OK
+  3--4 : W1, OK
+  4--5 : W1, OK
+
+Agents:
+  MiniMax#0: start=V1
+  MiniMax#1: start=V5
+
+======================================================================
+Time=0 | Game: Semi-Cooperative | Q=1 U=1 P=2 | Deadline=50
+
+Vertices:
+[1P1]<MiniMax>  [2]  [3P10]  [4]  [5P1]<MiniMax>
+
+Edges:
+  1--2 : W1, OK
+  2--3 : W1, OK
+  2--4 : W1, OK
+  3--4 : W1, OK
+  4--5 : W1, OK
+
+Agent Status:
+  MiniMax#0: V1, ready, rescued=0
+  MiniMax#1: V5, ready, rescued=0
+======================================================================
+T=0: MiniMax#0 decides: TRAVERSE -> V2
+         Action will complete at T=1
+T=0: MiniMax#1 decides: TRAVERSE -> V4
+         Action will complete at T=1
+
+======================================================================
+Time=0 | Game: Semi-Cooperative | Q=1 U=1 P=2 | Deadline=50
+
+Vertices:
+[1]  [2]<MiniMax>  [3P10]  [4]<MiniMax>  [5]
+
+Edges:
+  1--2 : W1, OK
+  2--3 : W1, OK
+  2--4 : W1, OK
+  3--4 : W1, OK
+  4--5 : W1, OK
+
+Agent Status:
+  MiniMax#0: V2, busy (ready at T=1), rescued=1
+  MiniMax#1: V4, busy (ready at T=1), rescued=1
+======================================================================
+T=1: MiniMax#0 decides: TRAVERSE -> V3
+         Action will complete at T=2
+T=1: MiniMax#1 decides: TRAVERSE -> V2
+         Action will complete at T=2
+
+======================================================================
+Time=1 | Game: Semi-Cooperative | Q=1 U=1 P=2 | Deadline=50
+
+Vertices:
+[1]  [2]<MiniMax>  [3P10]<MiniMax>  [4]  [5]
+
+Edges:
+  1--2 : W1, OK
+  2--3 : W1, OK
+  2--4 : W1, OK
+  3--4 : W1, OK
+  4--5 : W1, OK
+
+Agent Status:
+  MiniMax#0: V3, busy (ready at T=2), rescued=1
+  MiniMax#1: V2, busy (ready at T=2), rescued=1
+======================================================================
+======================================================================
+Time=2 | Game: Semi-Cooperative | Q=1 U=1 P=2 | Deadline=50
+
+Vertices:
+[1]  [2]<MiniMax>  [3]<MiniMax>  [4]  [5]
+
+Edges:
+  1--2 : W1, OK
+  2--3 : W1, OK
+  2--4 : W1, OK
+  3--4 : W1, OK
+  4--5 : W1, OK
+
+Agent Status:
+  MiniMax#0: V3, ready, rescued=11
+  MiniMax#1: V2, ready, rescued=1
+======================================================================
+
+>>> Simulation Terminated: All people rescued <<<
+
+======================================================================
+FINAL RESULTS
+======================================================================
+  MiniMax#0: rescued=11 people
+  MiniMax#1: rescued=1 people
+  TOTAL: 12 people rescued
+
+Game-Specific Scores (TS):
+  MiniMax#0: TS = 11 (ties favor cooperation)
+  MiniMax#1: TS = 1 (ties favor cooperation)
+
+################################################################################
+==== SIMULATION END ====
+timestamp: 2026-01-01 12:22:04
+run_id:    380c0fc8
+status:    finished
+################################################################################

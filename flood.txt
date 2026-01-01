@@ -1,0 +1,26 @@
+#N 4
+#Q 2
+#U 1
+#P 2
+
+; Scenario 2: Flooded Road Strategy
+; Agent 0 has access to a kit, Agent 1 does not
+; There's a shortcut through flooded road
+;
+;   V1(Kit,A0) =[FLOOD]= V2(5 people)
+;       |                   |
+;      V3 --------------- V4(A1, 5 people)
+;
+; In Adversarial: Agent 0 should use kit to beat Agent 1 to V2
+; In Fully-Coop: Agent 0 uses kit for V2, Agent 1 stays at V4
+; In Semi-Coop: Similar to adversarial but with tie-breaking
+
+#V1 K             ; Kit here, Agent 0 starts
+#V2 P5            ; 5 people behind flood
+#V3               ; Junction
+#V4 P5            ; 5 people, Agent 1 starts
+
+#E1 1 2 W1 F      ; FLOODED shortcut
+#E2 1 3 W1        ; V1-V3
+#E3 2 4 W1        ; V2-V4
+#E4 3 4 W1        ; V3-V4
